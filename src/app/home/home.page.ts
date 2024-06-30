@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   IonHeader,
   IonToolbar,
@@ -23,7 +24,7 @@ import {
   IonListHeader,
   IonButtons,
   IonModal,
-  ModalController,
+  ModalController, IonCheckbox
 } from '@ionic/angular/standalone';
 import { AddTodoComponentComponent } from '../add-todo-component/add-todo-component.component';
 
@@ -32,7 +33,7 @@ import { AddTodoComponentComponent } from '../add-todo-component/add-todo-compon
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonCheckbox,
     IonModal,
     IonButtons,
     IonListHeader,
@@ -56,49 +57,42 @@ import { AddTodoComponentComponent } from '../add-todo-component/add-todo-compon
     IonToolbar,
     IonTitle,
     IonContent,
+    FormsModule
   ],
 })
 export class HomePage {
-  todoList = [
-    {
-      itemName: 'Coding',
-      itemDueDate: '30-06-24',
-      itemPriority: 'high',
-      itemCategory: 'Work',
-    },
-    {
-      itemName: 'Take a walk in nature',
-      itemDueDate: 'Today',
-      itemPriority: 'medium',
-      itemCategory: 'Self-Care',
-    },
-    {
-      itemName: 'Pick up groceries',
-      itemDueDate: 'Tomorrow',
-      itemPriority: 'medium',
-      itemCategory: 'Errands',
-    },
-    {
-      itemName: 'Learn a new recipe',
-      itemDueDate: 'This weekend',
-      itemPriority: 'low',
-      itemCategory: 'Personal',
-    },
-    {
-      itemName: 'Pay bills',
-      itemDueDate: '05-07-24',
-      itemPriority: 'high',
-      itemCategory: 'Finances',
-    },
-  ];
+  todoList: Array<{ itemName: string; itemDueDate: string; itemPriority: string; itemCategory: string, done: boolean }> = [];
   today = Date.now();
 
   async presentModal() {
     const modal = await this.modalController.create({
       component: AddTodoComponentComponent,
     });
+
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data && dataReturned.role == "confirm") {
+        const newItem = dataReturned.data;
+        this.todoList.unshift(newItem);
+        localStorage.setItem('todoList', JSON.stringify(this.todoList));
+      }
+    });
+
     return await modal.present();
   }
 
-  constructor(public modalController: ModalController) {}
+  toggleDoneStatus(item: any): void {
+    const index = this.todoList.findIndex(todo => todo.itemName === item.itemName);
+
+    if (index !== -1) {
+      this.todoList[index].done = !this.todoList[index].done;
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
+    }
+  }
+
+  constructor(public modalController: ModalController) {
+    const storedList = localStorage.getItem('todoList');
+    if (storedList) {
+      this.todoList = JSON.parse(storedList);
+    }
+  }
 }

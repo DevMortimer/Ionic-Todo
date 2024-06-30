@@ -16,16 +16,27 @@
   <ion-list-header>{{today | date:'fullDate'}}</ion-list-header>
   <ion-card *ngFor="let item of todoList" lines="none" class="ion-margin">
     <ion-card-header>
-      <ion-card-title>{{item.itemName}}</ion-card-title>
+      <ng-container *ngIf="!item.done; else elseBlock">
+        <ion-card-title>
+          <ion-checkbox checked="{{item.done}}" (ionChange)="toggleDoneStatus(item)"></ion-checkbox>
+          {{item.itemName}}
+        </ion-card-title>
+      </ng-container>
+      <ng-template #elseBlock>
+        <ion-card-title>
+          <ion-checkbox checked="{{item.done}}" (ionChange)="toggleDoneStatus(item)"></ion-checkbox>
+          <s> {{item.itemName}}</s>
+        </ion-card-title>
+      </ng-template>
+
       <ion-card-subtitle
-        [style.color]="item.itemPriority === 'high' ? 'red' : (item.itemPriority === 'medium' ? 'orange' : 'green')"
-      >
+        [style.color]="item.itemPriority === 'high' ? 'red' : (item.itemPriority === 'medium' ? 'orange' : 'green')">
         {{item.itemCategory}}
       </ion-card-subtitle>
     </ion-card-header>
-  
+
     <ion-card-content>
-      <ion-label>Due {{item.itemDueDate}}</ion-label>
+      <ion-label>Due {{item.itemDueDate | date:'fullDate'}}</ion-label>
     </ion-card-content>
   </ion-card>
 </ion-content>

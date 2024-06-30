@@ -13,32 +13,26 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list [inset]="true" lines="none">
-    <ion-item>
-      <ion-input
-        label="Description"
-        labelPlacement="stacked"
-        type="text"
-        [(ngModel)]="description"
-      >
-      </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input
-        label="Category"
-        labelPlacement="stacked"
-        type="text"
-        [(ngModel)]="category"
-      >
-      </ion-input>
-    </ion-item>
-  </ion-list>
+  <ion-row class="ion-justify-content-center">
+    <ion-col>
+      <ion-list [inset]="true" lines="none">
+        <ion-item>
+          <ion-input label="Description" labelPlacement="stacked" type="text" [(ngModel)]="description">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Category" labelPlacement="stacked" type="text" [(ngModel)]="category">
+          </ion-input>
+        </ion-item>
+      </ion-list>
 
-  <ion-select label="Priority" [(ngModel)]="priority">
-    <ion-select-option value="low">low</ion-select-option>
-    <ion-select-option value="medium">medium</ion-select-option>
-    <ion-select-option value="high">high</ion-select-option>
-  </ion-select>
+      <ion-select label="Priority" [(ngModel)]="priority">
+        <ion-select-option value="low">low</ion-select-option>
+        <ion-select-option value="medium">medium</ion-select-option>
+        <ion-select-option value="high">high</ion-select-option>
+      </ion-select>
 
-  <ion-datetime [(ngModel)]="date" value="{{ date }}"></ion-datetime>
+      <ion-datetime [(ngModel)]="date" value="{{ date }}" presentation="date"></ion-datetime>
+    </ion-col>
+  </ion-row>
 </ion-content>

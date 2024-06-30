@@ -16,6 +16,7 @@ import {
   IonDatetime,
   IonSelect,
   IonSelectOption,
+  IonCol, IonRow, IonGrid
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -23,7 +24,7 @@ import {
   templateUrl: './add-todo-component.component.html',
   styleUrls: ['./add-todo-component.component.scss'],
   standalone: true,
-  imports: [
+  imports: [IonGrid, IonRow, IonCol,
     IonDatetime,
     IonList,
     IonListHeader,
@@ -65,8 +66,16 @@ export class AddTodoComponentComponent {
       return;
     }
 
-    this.modalController.dismiss(null, 'confirm');
+    const data = {
+      itemName: this.description,
+      itemDueDate: this.date.toString(),
+      itemPriority: this.priority,
+      itemCategory: this.category,
+      done: false
+    }
+
+    this.modalController.dismiss(data, 'confirm');
   }
 
-  constructor(public modalController: ModalController) {}
+  constructor(public modalController: ModalController) { }
 }
