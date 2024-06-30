@@ -1,0 +1,31 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-title>Ionic Todo</ion-title>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="presentModal()" expand="block">
+      <ion-icon src="assets/plus-solid.svg"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-list-header>{{today | date:'fullDate'}}</ion-list-header>
+  <ion-card *ngFor="let item of todoList" lines="none" class="ion-margin">
+    <ion-card-header>
+      <ion-card-title>{{item.itemName}}</ion-card-title>
+      <ion-card-subtitle
+        [style.color]="item.itemPriority === 'high' ? 'red' : (item.itemPriority === 'medium' ? 'orange' : 'green')"
+      >
+        {{item.itemCategory}}
+      </ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-label>Due {{item.itemDueDate}}</ion-label>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
